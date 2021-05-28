@@ -1,24 +1,15 @@
-import {
-  databaseId,
-  getDatabase,
-  getPage,
-} from '../components/notion/index.js';
+import React from 'react';
+import { NotionRenderer } from 'react-notion-x';
+import { getPage } from '../components/notion-unofficial/index.js';
 
-export default function Home({ data }) {
-  return (
-    <div>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
-  );
-}
+export default ({ recordMap }) => (
+  <NotionRenderer recordMap={recordMap} fullPage={true} darkMode={false} />
+);
 
 export async function getServerSideProps(context) {
-  const pages = await getDatabase({ id: databaseId });
-  const pageInfo = await getPage({ id: pages[0].id });
-
-  const data = { pages, pageInfo };
+  const recordMap = await getPage('40e1a7245ee44a2d8da9809851aae7cb');
 
   return {
-    props: { data }, // will be passed to the page component as props
+    props: { recordMap }, // will be passed to the page component as props
   };
 }
